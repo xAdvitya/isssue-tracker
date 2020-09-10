@@ -71,9 +71,14 @@ module.exports = function(app) {
         newIssue["created_on"] = Date.now();
         newIssue["updated_on"] = Date.now();
         newIssue = new Issue(newIssue);
-        newIssue.save();
-        //console.log(newIssue);
-        res.json(newIssue);
+        newIssue.save((error, savedIssue) => {
+          if (error) {
+            console.error("Failed to save issue:", error);
+            return res.json({ error: "Could not save the issue" });
+          }
+          res.json(newIssue);
+        });
+        
       }
     })
 
@@ -119,17 +124,16 @@ module.exports = function(app) {
 
     .delete(function(req, res) {
       let deleteId = req.body._id;
+      console.log(`hi ${req.body._id}`);
       if (!deleteId) {
         res.send("no id");
+      } else {
+        Issue.deleteOne({ _id: deleteId }, (err, done) => {
+          if (err) {
+            console.error(err);
+          }
+          res.send("deleted");
+        });
       }
-    else{
-      Issue.remove({ _id: deleteId }, (err, done) => {
-        if (err) {
-          console.error(err);
-        }
-         res.send("deleted");  
-      });
- 
-    }
-  });
+    });
 };

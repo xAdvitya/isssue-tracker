@@ -205,6 +205,8 @@ suite("Functional Tests", function() {
           .query({})
           .end(function(err, res) {
             assert.equal(res.status, 200);
+            // console.log("/////////////////////////")
+            // console.log(res.body)
             assert.isArray(res.body);
             assert.property(res.body[0], "issue_title");
             assert.property(res.body[0], "issue_text");
@@ -264,7 +266,7 @@ suite("Functional Tests", function() {
   );
 
   suite("DELETE /api/issues/{project} => text", function() {
-    test("No _id", function(done) {
+    test("No_id", function(done) {
       chai
         .request(server)
         .delete("/api/issues/test")
@@ -275,14 +277,15 @@ suite("Functional Tests", function() {
         });
     });
 
+  
     test("Valid _id", function(done) {
+      console.log( ` id : ${id}`)
       chai
         .request(server)
         .delete("/api/issues/test")
-        .query({_id:id})
+        .send({_id:id})
         .end(function(err, res) {
-        console.log(res.body)
-          assert.equal(res.text, "deleted", "issue not deleted");
+        assert.equal(res.text,"deleted","error in delete")
           done();
         });
     });

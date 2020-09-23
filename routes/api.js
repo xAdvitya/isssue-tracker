@@ -92,34 +92,49 @@ module.exports = function(app) {
       let status = updateIssue.status_text;
       let assigned = updateIssue.assigned_to;
 
-      Issue.findById(id, (err, data) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).json({ error: "Database operation failed" });
-        }
+//       Issue.findById(id, (err, data) => {
+//         if (err) {
+//           console.error(err);
+//           return res.status(500).json({ error: "Database operation failed" });
+//         }
 
-        if ("issue_title" in data) {
-          data["issue_title"] = title;
-        }
-        if ("issue_text" in data) {
-          data["issue_text"] = text;
-        }
-        if ("created_by" in data) {
-          data["created_by"] = created;
-        }
-        if ("status_text" in data) {
-          data["status_text"] = status;
-        }
-        if ("assigned_to" in data) {
-          data["assigned_to"] = assigned;
-        }
-        if ("open" in data) {
-          data["open"] = false;
-        }
-        data["updated_on"] = Date.now();
-        data.save();
-        res.json(data);
-      });
+//         if ("issue_title" in data) {
+//           data["issue_title"] = title;
+//         }
+//         if ("issue_text" in data) {
+//           data["issue_text"] = text;
+//         }
+//         if ("created_by" in data) {
+//           data["created_by"] = created;
+//         }
+//         if ("status_text" in data) {
+//           data["status_text"] = status;
+//         }
+//         if ("assigned_to" in data) {
+//           data["assigned_to"] = assigned;
+//         }
+//         if ("open" in data) {
+//           data["open"] = false;
+//         }
+//         data["updated_on"] = Date.now();
+//         console.log("put")
+//         console.log(data)
+        // data.save((error, savedIssue) => {
+        //   if (error) {
+        //     console.error("Failed to save issue:", error);
+        //     return res.json({ error: "Could not save the issue" });
+        //   }
+        //   res.json(data);
+        // });
+      // });
+    
+        Issue.findByIdAndUpdate(id,updateIssue,(error, savedIssue) => {
+          if (error) {
+            console.error("Failed to save issue:", error);
+            return res.json({ error: "Could not save the issue" });
+          }
+          res.json(updateIssue);
+        });
     })
 
     .delete(function(req, res) {

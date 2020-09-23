@@ -1,1 +1,1 @@
-# Information Security and Quality Assurance
+# Issue Tracker project
